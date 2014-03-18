@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scrolltastic</title>
+  <meta name="description" content="jQuery plugin for infinite scroll">
+  <meta name="author" content="Daniel Hood">
+</head>
+<body>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="jquery.scrolltastic.js"></script>
+  <div class="dhoodlum-scroll" style="height: 300px;overflow-y:auto;">
+    <div class="dh-scroll-content">
+      <div class="dh-scroll-items"></div>
+      <div class="dh-scroll-loading">Loading</div>
+      <div class="dh-scroll-end">End of results</div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function() {
+      $('.dhoodlum-scroll').scrolltastic({
+        loadMore: function(page) {
+          if(page > 15) {
+            this.bufferItems([]);
+          } else {
+            var start = page * 20;
+            var array = [];
+            for(var i = 0; i < 20; i++) {
+              array.push({
+                name: 'john #' + (start + i)
+              });
+            }
+            var self = this;
+            setTimeout(function() {
+              self.bufferItems(array);
+            }, 500);
+          }
+        },
+        renderMore: function(data) {
+          for(var i = 0; i < data.length; i++) {
+            var el = $('<div>'+ data[i].name +'</div>');
+            this.find('.dh-scroll-items').append(el);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
